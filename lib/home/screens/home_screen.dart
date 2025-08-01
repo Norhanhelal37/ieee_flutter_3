@@ -9,6 +9,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("My Tasks",style: Theme.of(context).textTheme.displayLarge!.copyWith( color: Colors.black)   ,),
+      ),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
               showDialog(
@@ -32,6 +35,7 @@ class HomeScreen extends StatelessWidget {
                       ElevatedButton(
                           onPressed: () {
                             context.read<TasksCubit>().addTask();
+
                             Navigator.of(context).pop();
                           },
                           child: Text(
@@ -58,30 +62,57 @@ class HomeScreen extends StatelessWidget {
               color: Colors.red,
             )),
         backgroundColor: Colors.white,
-        body: BlocBuilder<TasksCubit, TasksStates>(builder: (context, state) {
-          return ListView.builder(
-            itemCount: context.read<TasksCubit>().tasks.length,
-            itemBuilder: (context, index) {
-              return Container(
-                height: 100,
-                width: 500,
-                margin: EdgeInsets.all(20),
-                color: Colors.blue,
-                child: Row(
-                  children: [
-                    Text(context.read<TasksCubit>().tasks[index]),
-                    Spacer(),
-                    IconButton(
-                        onPressed: () {
-                          context.read<TasksCubit>().deleteTask(
-                              context.read<TasksCubit>().tasks[index]);
-                        },
-                        icon: Icon(Icons.remove))
-                  ],
-                ),
-              );
-            },
-          );
-        }));
+        body:
+            // bloc builder
+            // bloc listener
+            // bloc consumer
+            
+            BlocConsumer<TasksCubit,TasksStates>(
+              listener: (context, state) {
+                if(state is AddTaskState){
+                   ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.greenAccent,
+                        duration: Duration(milliseconds: 10),
+                        
+                        content: Text("Task Added !"))
+                    );
+                }
+                if(state is DeleteTaskState){
+                   ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.redAccent,
+                        
+                        content: Text(state.message))
+                    );
+                }
+                
+                
+              },
+              builder: (context, state) => 
+               ListView.builder(
+                itemCount: context.read<TasksCubit>().tasks.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: 100,
+                    width: 500,
+                    margin: EdgeInsets.all(20),
+                    color: Colors.blue,
+                    child: Row(
+                      children: [
+                        Text(context.read<TasksCubit>().tasks[index]),
+                        Spacer(),
+                        IconButton(
+                            onPressed: () {
+                              context.read<TasksCubit>().deleteTask(
+                                  context.read<TasksCubit>().tasks[index]);
+                            },
+                            icon: Icon(Icons.remove))
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ));
   }
 }

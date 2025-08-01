@@ -17,7 +17,7 @@ class TasksCubit extends Cubit<TasksStates> {
 
   void deleteTask(String currentTask) {
     tasks.remove(currentTask);
-    emit(DeleteTaskState());
+    emit(DeleteTaskState(message: "deleted Successfully"));
   }
 }
 

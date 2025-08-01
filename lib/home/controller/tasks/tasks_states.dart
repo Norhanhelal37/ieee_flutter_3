@@ -1,8 +1,11 @@
 abstract class TasksStates {}
 
+class TasksInitialState extends TasksStates {}
 
-class TasksInitialState extends TasksStates{}
+class DeleteTaskState extends TasksStates {
+  final String message;
 
-class DeleteTaskState extends TasksStates{}
+  DeleteTaskState({required this.message});
+}
 
-class AddTaskState extends TasksStates{}
+class AddTaskState extends TasksStates {}

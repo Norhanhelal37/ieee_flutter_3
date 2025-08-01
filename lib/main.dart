@@ -13,17 +13,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:(context) => TasksCubit() ,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => TasksCubit(),),
+
+
+
+      ],
       child: 
         MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
+
           theme: ThemeData(
+            textTheme: TextTheme(
+              displayLarge: TextStyle(
+                fontSize: 17,
+                color: Colors.amber,
+                fontWeight: FontWeight.bold
+              )
+
+            ),
+
             
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
             useMaterial3: true,
           ),
+          
+          
           home: HomeScreen(),
         )
       
